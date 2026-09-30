@@ -1,0 +1,18 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Noticias" colSpan="2"></Label>
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout class="page__content">
+    <Label [text]="'Estás usando ' + plataforma" class="plataforma"></Label>
+
+    <StackLayout *ngFor="let n of noticias" class="noticia" (tap)="verDetalle(n.id)">
+      <Label [text]="n.titulo" class="noticia-titulo"></Label>
+      <Label [text]="n.resumen" textWrap="true"></Label>
+    </StackLayout>
+  </StackLayout>
+</ScrollView>

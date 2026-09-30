@@ -1,12 +1,29 @@
 <RadSideDrawer [drawerTransition]="sideDrawerTransition">
   <GridLayout tkDrawerContent rows="auto, *" class="nt-drawer__content">
     <StackLayout row="0" class="nt-drawer__header">
-      <Image class="nt-drawer__header-image fas t-36" src="font://&#xf2bd;"></Image>
+      <Image
+        class="nt-drawer__header-image"
+        src="res://mi_icono"
+        width="72"
+        height="72"
+      ></Image>
       <Label class="nt-drawer__header-brand" text="User Name"></Label>
-      <Label class="nt-drawer__header-footnote" text="username@mail.com"></Label>
+      <Label
+        class="nt-drawer__header-footnote"
+        text="username@mail.com"
+      ></Label>
     </StackLayout>
 
     <ScrollView row="1" class="nt-drawer__body">
+      <GridLayout
+        columns="auto, *"
+        class="nt-drawer__list-item"
+        [class.-selected]="isComponentSelected('/noticias')"
+        (tap)="onNavItemTap('/noticias')"
+      >
+        <Label col="0" text="&#xf1ea;" class="nt-icon fas"></Label>
+        <Label col="1" text="Noticias" class="p-r-10"></Label>
+      </GridLayout>
       <StackLayout>
         <GridLayout
           columns="auto, *"
