@@ -17,8 +17,8 @@ const routes: Routes = [
     loadChildren: () => import('~/app/search/search.module').then((m) => m.SearchModule),
   },
   {
-    path: 'featured',
-    loadChildren: () => import('~/app/featured/featured.module').then((m) => m.FeaturedModule),
+    path: 'favoritos',
+    loadChildren: () => import('~/app/favoritos/favoritos.module').then((m) => m.FavoritosModule),
   },
   {
     path: 'settings',

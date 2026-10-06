@@ -1,0 +1,32 @@
+<ActionBar class="action-bar" title="Editar usuario"></ActionBar>
+
+<StackLayout class="page__content" padding="16">
+  <!-- (6) Pantalla para editar el nombre de usuario y persistirlo -->
+  <Label text="Nombre de usuario" class="etiqueta"></Label>
+  <TextField
+    hint="Tu nombre"
+    [(ngModel)]="nombre"
+    #nombreCtrl="ngModel"
+    [minLen]="3"
+    class="input input-border"
+  ></TextField>
+  <Label *ngIf="nombreCtrl.errors?.minLen" text="Mínimo 3 caracteres" class="error"></Label>
+
+  <Label text="URL de la API (Ngrok)" class="etiqueta"></Label>
+  <TextField
+    hint="https://xxxx.ngrok-free.app"
+    [(ngModel)]="apiUrl"
+    keyboardType="url"
+    autocapitalizationType="none"
+    autocorrect="false"
+    class="input input-border"
+  ></TextField>
+
+  <Button
+    text="Guardar"
+    class="-primary m-t-20"
+    [isEnabled]="!nombreCtrl.invalid && nombre.trim().length > 0"
+    (tap)="guardar()"
+  ></Button>
+  <Button text="Cancelar" (tap)="volver()"></Button>
+</StackLayout>

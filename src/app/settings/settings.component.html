@@ -2,12 +2,17 @@
   <NavigationButton visibility="hidden"></NavigationButton>
   <GridLayout columns="50, *">
     <Label class="action-bar-title" text="Settings" colSpan="2"></Label>
-
     <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf013;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
-</GridLayout>
+<StackLayout class="page__content" padding="16">
+  <!-- (5) Nombre de usuario leído de forma persistente con ApplicationSettings -->
+  <Label text="Nombre de usuario" class="etiqueta"></Label>
+  <Label [text]="nombre" class="valor"></Label>
+
+  <Label text="URL de la API (Ngrok)" class="etiqueta"></Label>
+  <Label [text]="apiUrl" class="valor" textWrap="true"></Label>
+
+  <Button text="Editar" class="-primary m-t-20" (tap)="editar()"></Button>
+</StackLayout>

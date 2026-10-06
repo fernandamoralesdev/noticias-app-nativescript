@@ -1,0 +1,13 @@
+{
+  "name": "noticias-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API Express de noticias para MiProyecto (Módulo 3)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

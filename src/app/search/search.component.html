@@ -7,27 +7,25 @@
 </ActionBar>
 
 <GridLayout rows="auto, auto, auto, *" class="page__content">
-  <!-- (6) Formulario de búsqueda con two-way binding + (7) validador personalizado -->
+  <!-- (2) Formulario de búsqueda: caja de texto + botón -->
   <GridLayout row="0" columns="*, auto" class="p-10">
     <TextField
       col="0"
-      hint="Buscar por título o categoría (mín. 3 letras)"
+      hint="Buscar por título o categoría"
       [(ngModel)]="texto"
       #textoCtrl="ngModel"
       [minLen]="3"
       returnKeyType="search"
       (returnPress)="buscar(textoCtrl.valid)"
-      (ngModelChange)="buscar(textoCtrl.valid, $event)"
       class="input input-border"
     ></TextField>
-    <!-- (8) long press para limpiar la búsqueda -->
-    <Label
+    <Button
       col="1"
-      class="fas icono-buscar"
-      text="&#xf002;"
+      text="Buscar"
+      class="-primary"
+      [isEnabled]="!textoCtrl.invalid && !cargando"
       (tap)="buscar(textoCtrl.valid)"
-      (longPress)="limpiar()"
-    ></Label>
+    ></Button>
   </GridLayout>
 
   <Label
@@ -36,15 +34,26 @@
     class="error"
     [text]="'Escribe al menos 3 caracteres (llevas ' + textoCtrl.errors?.minLen?.actual + ')'"
   ></Label>
-  <Label row="2" class="contador" [text]="resultados.length + ' resultado(s)'"></Label>
+  <StackLayout row="2" orientation="horizontal" class="estado">
+    <ActivityIndicator [busy]="cargando" width="20" height="20"></ActivityIndicator>
+    <Label [text]="mensaje" class="contador"></Label>
+  </StackLayout>
 
-  <!-- (1) ListView con plantilla anidada usando FlexboxLayout -->
-  <ListView row="3" [items]="resultados" (itemTap)="onItemTap($event)">
+  <!-- Resultados que llegan desde la API Express (ListView + FlexboxLayout) -->
+  <ListView row="3" [items]="resultados">
     <ng-template let-item="item">
       <FlexboxLayout flexDirection="row" flexWrap="wrap" alignItems="center" class="resultado">
-        <Label [text]="item.titulo" class="resultado-titulo" flexGrow="1" textWrap="true"></Label>
+        <Label [text]="item.titulo" class="resultado-titulo" flexGrow="1" flexShrink="1" textWrap="true"></Label>
         <Label [text]="item.categoria" class="chip"></Label>
-        <Label *ngIf="item.favorita" class="fas favorita" text="&#xf005;"></Label>
+        <!-- (7) Ícono para guardar como favorito -->
+        <Label
+          class="icono-favorito"
+          [class.fas]="esFavorito(item.id)"
+          [class.far]="!esFavorito(item.id)"
+          [class.activo]="esFavorito(item.id)"
+          text="&#xf005;"
+          (tap)="alternarFavorito(item)"
+        ></Label>
         <Label [text]="item.resumen" class="resultado-resumen" flexBasis="100%" textWrap="true"></Label>
       </FlexboxLayout>
     </ng-template>

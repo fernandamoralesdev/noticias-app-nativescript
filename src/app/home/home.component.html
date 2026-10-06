@@ -1,13 +1,34 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
   <GridLayout columns="50, *">
-    <Label class="action-bar-title" text="Home" colSpan="2"></Label>
-
+    <Label class="action-bar-title" text="Inicio" colSpan="2"></Label>
     <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf015;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout rows="auto, auto, *" class="page__content">
+  <Label row="0" [text]="'Hola, ' + (nombre$ | async)" class="saludo"></Label>
+  <Label row="1" text="Para leer ahora" class="subtitulo"></Label>
+
+  <!-- (10) Listado que se actualiza reactivamente con store.select(...) -->
+  <GridLayout row="2">
+    <Label
+      *ngIf="(leerAhora$ | async)?.length === 0"
+      class="vacio"
+      textWrap="true"
+      text="Toca “Leer ahora” en tus favoritos y aparecerán aquí."
+    ></Label>
+    <ListView [items]="leerAhora$ | async">
+      <ng-template let-item="item">
+        <GridLayout columns="auto, *, auto" class="item">
+          <Label col="0" class="fas icono" text="&#xf02d;"></Label>
+          <StackLayout col="1">
+            <Label [text]="item.titulo" class="titulo" textWrap="true"></Label>
+            <Label [text]="item.resumen" class="resumen" textWrap="true"></Label>
+          </StackLayout>
+          <Label col="2" class="fas quitar" text="&#xf00c;" (tap)="marcarLeida(item.id)"></Label>
+        </GridLayout>
+      </ng-template>
+    </ListView>
+  </GridLayout>
 </GridLayout>

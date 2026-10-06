@@ -9,6 +9,8 @@ import {
 import { filter } from 'rxjs/operators'
 import { Application } from '@nativescript/core'
 
+import { UsuarioService } from './domain/usuario.service'
+
 @Component({
   selector: 'ns-app',
   templateUrl: 'app.component.html',
@@ -16,8 +18,14 @@ import { Application } from '@nativescript/core'
 export class AppComponent implements OnInit {
   private _activatedUrl: string
   private _sideDrawerTransition: DrawerTransitionBase
+  /** Nombre de usuario persistido, mostrado en el encabezado del menú lateral */
+  nombre$ = this.usuarioService.nombre$
 
-  constructor(private router: Router, private routerExtensions: RouterExtensions) {
+  constructor(
+    private router: Router,
+    private routerExtensions: RouterExtensions,
+    private usuarioService: UsuarioService
+  ) {
     // Use the component constructor to inject services.
   }
 

@@ -34,12 +34,49 @@ Plugins agregados: `@nativescript-community/ui-pulltorefresh` (pull to refresh) 
 | # | Requisito | Dónde está |
 |---|---|---|
 | 1 | Página de búsqueda con `ListView` y plantilla anidada con `FlexboxLayout` | `src/app/search/search.component.html` (menú lateral → "Buscar") |
-| 2 | Navegación listado → detalle con `RouterExtensions.navigate` | `noticias-list.component.ts` → `verDetalle()` (también `search.component.ts` → `onItemTap()`) |
+| 2 | Navegación listado → detalle con `RouterExtensions.navigate` | `noticias-list.component.ts` → `verDetalle()` |
 | 3 | Pull to refresh que agrega elementos aleatorios | `noticias-list.component.html` (`<PullToRefresh>`), `onPullToRefresh()`; registro en `app.module.ts` |
 | 4 | Ícono que abre un diálogo "action" y cambia un atributo | ícono de etiqueta en cada noticia → `onCategoriaTap()` cambia `noticia.categoria` |
 | 5 | Toast | `src/app/shared/toast.ts`, usado al refrescar, cambiar categoría, favorita y guardar |
-| 6 | Two way binding `[()]` | `[(ngModel)]` en el buscador (`search.component.html`) y en el formulario de edición (`noticias-detalle.component.html`) |
+| 6 | Two way binding `[()]` | `[(ngModel)]` en el buscador (`search.component.html`), en el formulario de edición (`noticias-detalle.component.html`) y en Settings → Editar |
 | 7 | Validador personalizado con directiva | `src/app/shared/min-length.directive.ts` (`[minLen]`), usado en búsqueda (mín. 3) y edición de título (mín. 5) |
-| 8 | Detección de gestos | doble tap en la estrella (`onFavoritaDoubleTap`) y long press en la lupa del buscador (`limpiar()`) |
+| 8 | Detección de gestos | doble tap en la estrella (`onFavoritaDoubleTap`) |
 | 9 | Animación en un ícono | la estrella rota 360° y se agranda al marcar favorita (`icono.animate(...)`) |
 | 10 | Splash screen personalizado para Android | `App_Resources/Android/src/main/res/drawable-nodpi/splash_screen.xml`, colores en `values/colors.xml`, Android 12+ en `values-v31/styles.xml` |
+
+---
+
+# Evaluación Módulo 3 – Persistencia, API y Redux
+
+Se agregaron: una API en Express (`api/`), `@ngrx/store` (Redux), `ApplicationSettings` para datos persistentes y la sección **Favoritos** (antes "Featured").
+
+## Cómo probarlo
+
+~~~
+# 1. Levantar la API
+cd api
+npm install
+npm start                 # http://localhost:3000/noticias?q=tecnologia
+
+# 2. En otra terminal, exponerla con Ngrok
+ngrok http 3000
+
+# 3. Copiar la URL https de Ngrok en src/app/config/app-config.ts
+#    (o desde la app: Settings → Editar → URL de la API)
+
+# 4. Correr la app
+ns run android
+~~~
+
+| # | Requisito | Dónde está |
+|---|---|---|
+| 1 | App Express con GET y filtrado por querystring | `api/app.js` → `GET /noticias?q=texto` (también `?categoria=Deportes`) |
+| 2 | Listado con formulario de búsqueda (caja de texto + botón) que filtra | `src/app/search/search.component.html` / `.ts` (menú → "Buscar") |
+| 3 | Variable de configuración con la URL de Ngrok | `src/app/config/app-config.ts` (`AppConfig.apiUrl`), editable y persistida desde Settings |
+| 4 | Service de Angular que hace la solicitud HTTP | `src/app/domain/noticias-api.service.ts` (`HttpClient.get`), el componente solo se suscribe |
+| 5 | Settings que lee el nombre de usuario de forma persistente | `src/app/settings/settings.component.ts` + `src/app/domain/usuario.service.ts` (`ApplicationSettings.getString`) |
+| 6 | Pantalla para editar el nombre y persistirlo | `src/app/settings/settings-editar/` (`ApplicationSettings.setString`) |
+| 7 | Ícono para guardar como favorito en el listado de búsqueda | estrella en cada resultado de `search.component.html` → `FavoritosService.alternar()` |
+| 8 | Favoritos listados en la sección "Favoritos" | `src/app/favoritos/favoritos.component.html` (persistidos en `favoritos.service.ts`) |
+| 9 | Botón "Leer ahora" que despacha un action de Redux | `favoritos.component.ts` → `store.dispatch(leerAhora({ noticia }))`; actions/reducer en `src/app/store/` |
+| 10 | Pantalla principal con listado reactivo usando `select` del Store | `src/app/home/home.component.ts` → `store.select(selectNoticiasLeerAhora)` + `async` en el `ListView` |

@@ -1,18 +1,43 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
+import { RouterExtensions } from '@nativescript/angular'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application } from '@nativescript/core'
+import { Application, NavigatedData } from '@nativescript/core'
+import { Page } from '@nativescript/core'
+
+import { UsuarioService } from '../domain/usuario.service'
 
 @Component({
   selector: 'Settings',
   templateUrl: './settings.component.html',
+  styles: [
+    `
+      .etiqueta { color: #757575; font-size: 13; margin-top: 12; }
+      .valor { font-size: 18; font-weight: bold; }
+    `,
+  ],
 })
-export class SettingsComponent implements OnInit {
-  constructor() {
-    // Use the component constructor to inject providers.
+export class SettingsComponent {
+  nombre = ''
+  apiUrl = ''
+
+  constructor(
+    private usuarioService: UsuarioService,
+    private routerExtensions: RouterExtensions,
+    page: Page
+  ) {
+    this.cargar()
+    // Recarga los valores al volver desde la pantalla de edición
+    page.on(Page.navigatedToEvent, (_: NavigatedData) => this.cargar())
   }
 
-  ngOnInit(): void {
-    // Init your component properties here.
+  /** (5) Lee los valores persistidos */
+  cargar(): void {
+    this.nombre = this.usuarioService.getNombre()
+    this.apiUrl = this.usuarioService.getApiUrl()
+  }
+
+  editar(): void {
+    this.routerExtensions.navigate(['/settings/editar'], { transition: { name: 'slide' } })
   }
 
   onDrawerButtonTap(): void {

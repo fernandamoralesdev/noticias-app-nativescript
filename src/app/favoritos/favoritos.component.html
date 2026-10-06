@@ -1,0 +1,32 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Favoritos" colSpan="2"></Label>
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<GridLayout rows="auto, *" class="page__content">
+  <Label
+    row="0"
+    *ngIf="(favoritos$ | async)?.length === 0"
+    class="vacio"
+    textWrap="true"
+    text="Aún no tienes favoritos. Márcalos con la estrella en la pantalla Buscar."
+  ></Label>
+
+  <!-- (8) Listado de favoritos -->
+  <ListView row="1" [items]="favoritos$ | async">
+    <ng-template let-item="item">
+      <GridLayout columns="*, auto, auto" class="favorito">
+        <StackLayout col="0">
+          <Label [text]="item.titulo" class="titulo" textWrap="true"></Label>
+          <Label [text]="item.categoria" class="categoria"></Label>
+        </StackLayout>
+        <!-- (9) "Leer ahora": despacha un action al store de Redux -->
+        <Button col="1" text="Leer ahora" class="-primary -rounded-sm boton" (tap)="leerAhora(item)"></Button>
+        <Label col="2" class="fas quitar" text="&#xf005;" (tap)="quitar(item)"></Label>
+      </GridLayout>
+    </ng-template>
+  </ListView>
+</GridLayout>
