@@ -1,3 +1,8 @@
 .noticia { padding: 12; border-bottom-width: 1; border-color: #dddddd; }
 .noticia-titulo { font-weight: bold; font-size: 18; }
-.plataforma { font-size: 16; margin-bottom: 10; }
+.noticia-categoria { font-size: 13; color: #757575; margin-top: 4; }
+.plataforma { font-size: 16; margin-bottom: 4; padding: 0 12; }
+.ayuda { font-size: 12; color: #9e9e9e; padding: 0 12 8 12; }
+.icono { font-size: 22; padding: 0 10; vertical-align: center; color: #65adf1; }
+.estrella { color: #bdbdbd; }
+.estrella.activa { color: #f5b301; }

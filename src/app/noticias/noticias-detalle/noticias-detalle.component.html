@@ -1,7 +1,38 @@
 <ActionBar class="action-bar" title="Detalle"></ActionBar>
 
-<StackLayout class="page__content" padding="16">
-  <Label [text]="noticia?.titulo" class="h2"></Label>
-  <Label [text]="noticia?.resumen" textWrap="true"></Label>
-  <Button text="Volver" (tap)="volver()"></Button>
-</StackLayout>
+<ScrollView>
+  <StackLayout class="page__content" padding="16">
+    <Label [text]="noticia?.titulo" class="h2" textWrap="true"></Label>
+    <Label [text]="noticia?.resumen" textWrap="true"></Label>
+    <Label [text]="'Categoría: ' + noticia?.categoria" class="m-t-10"></Label>
+
+    <!-- (6) Formulario de edición con two-way binding [()] -->
+    <Label text="Editar noticia" class="h3 m-t-20"></Label>
+    <TextField
+      hint="Título (mínimo 5 caracteres)"
+      [(ngModel)]="titulo"
+      #tituloCtrl="ngModel"
+      [minLen]="5"
+      class="input input-border"
+    ></TextField>
+    <!-- (7) Error del validador personalizado -->
+    <Label
+      *ngIf="tituloCtrl.errors?.minLen"
+      text="El título debe tener al menos 5 caracteres"
+      class="error"
+    ></Label>
+    <TextView
+      hint="Resumen"
+      [(ngModel)]="resumen"
+      class="input input-border m-t-10"
+    ></TextView>
+
+    <Button
+      text="Guardar"
+      class="-primary m-t-10"
+      [isEnabled]="!tituloCtrl.invalid"
+      (tap)="guardar()"
+    ></Button>
+    <Button text="Volver" (tap)="volver()"></Button>
+  </StackLayout>
+</ScrollView>

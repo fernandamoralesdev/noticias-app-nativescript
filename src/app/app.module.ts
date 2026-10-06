@@ -1,9 +1,13 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core'
-import { NativeScriptModule } from '@nativescript/angular'
+import { NativeScriptModule, registerElement } from '@nativescript/angular'
 import { NativeScriptUISideDrawerModule } from 'nativescript-ui-sidedrawer/angular'
+import { PullToRefresh } from '@nativescript-community/ui-pulltorefresh'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+
+// Registro del componente del plugin "pull to refresh" para usarlo en las plantillas
+registerElement('PullToRefresh', () => PullToRefresh)
 
 @NgModule({
   bootstrap: [AppComponent],

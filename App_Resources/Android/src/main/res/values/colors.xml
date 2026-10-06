@@ -11,4 +11,8 @@
 
     <!-- this is unused in the default themes, so we might want to remove it? -->
     <!-- <color name="ns_blue">#272734</color> -->
+
+    <!-- (10) Colores del splash screen personalizado -->
+    <color name="splash_inicio">#1565C0</color>
+    <color name="splash_fin">#0D47A1</color>
 </resources>

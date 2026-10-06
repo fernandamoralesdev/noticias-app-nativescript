@@ -6,13 +6,47 @@
   </GridLayout>
 </ActionBar>
 
-<ScrollView>
-  <StackLayout class="page__content">
-    <Label [text]="'Estás usando ' + plataforma" class="plataforma"></Label>
+<GridLayout rows="auto, auto, *" class="page__content">
+  <Label row="0" [text]="'Estás usando ' + plataforma" class="plataforma"></Label>
+  <Label
+    row="1"
+    class="ayuda"
+    textWrap="true"
+    text="Desliza hacia abajo para agregar noticias · Toca la etiqueta para cambiar la categoría · Doble tap en la estrella para marcar favorita"
+  ></Label>
 
-    <StackLayout *ngFor="let n of noticias" class="noticia" (tap)="verDetalle(n.id)">
-      <Label [text]="n.titulo" class="noticia-titulo"></Label>
-      <Label [text]="n.resumen" textWrap="true"></Label>
-    </StackLayout>
-  </StackLayout>
-</ScrollView>
+  <!-- (3) Pull to refresh envolviendo el ListView -->
+  <PullToRefresh row="2" (refresh)="onPullToRefresh($event)">
+    <ListView [items]="noticias" class="list-group">
+      <ng-template let-item="item">
+        <GridLayout columns="*, auto, auto" class="noticia">
+          <!-- (2) tap en el ítem → vista de detalle -->
+          <StackLayout col="0" (tap)="verDetalle(item.id)">
+            <Label [text]="item.titulo" class="noticia-titulo" textWrap="true"></Label>
+            <Label [text]="item.resumen" textWrap="true"></Label>
+            <Label [text]="'Categoría: ' + item.categoria" class="noticia-categoria"></Label>
+          </StackLayout>
+
+          <!-- (4) ícono que abre un diálogo "action" para elegir categoría -->
+          <Label
+            col="1"
+            class="fas icono"
+            text="&#xf02b;"
+            (tap)="onCategoriaTap(item)"
+          ></Label>
+
+          <!-- (8) gesto doble tap + (9) animación -->
+          <Label
+            col="2"
+            class="icono estrella"
+            [class.fas]="item.favorita"
+            [class.far]="!item.favorita"
+            [class.activa]="item.favorita"
+            text="&#xf005;"
+            (doubleTap)="onFavoritaDoubleTap($event, item)"
+          ></Label>
+        </GridLayout>
+      </ng-template>
+    </ListView>
+  </PullToRefresh>
+</GridLayout>

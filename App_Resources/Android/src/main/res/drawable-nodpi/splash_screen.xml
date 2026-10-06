@@ -1,8 +1,18 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="fill">
+<?xml version="1.0" encoding="utf-8"?>
+<!-- (10) Splash screen personalizado: fondo de color propio + ícono de la app centrado -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <bitmap android:gravity="fill" android:src="@drawable/background" />
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="@color/splash_inicio"
+                android:endColor="@color/splash_fin" />
+        </shape>
     </item>
-    <item>
-        <bitmap android:gravity="center" android:src="@drawable/logo" />
+    <item
+        android:width="160dp"
+        android:height="160dp"
+        android:gravity="center">
+        <bitmap android:gravity="center" android:src="@drawable/mi_icono" />
     </item>
 </layer-list>

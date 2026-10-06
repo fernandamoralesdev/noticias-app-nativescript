@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ícono para el splash del sistema en Android 12+ (debe caber en un círculo) -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/mi_icono"
+    android:inset="56dp" />

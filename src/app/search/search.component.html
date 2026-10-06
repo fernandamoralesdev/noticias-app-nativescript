@@ -1,13 +1,52 @@
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
   <GridLayout columns="50, *">
-    <Label class="action-bar-title" text="Search" colSpan="2"></Label>
-
+    <Label class="action-bar-title" text="Buscar noticias" colSpan="2"></Label>
     <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf002;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout rows="auto, auto, auto, *" class="page__content">
+  <!-- (6) Formulario de búsqueda con two-way binding + (7) validador personalizado -->
+  <GridLayout row="0" columns="*, auto" class="p-10">
+    <TextField
+      col="0"
+      hint="Buscar por título o categoría (mín. 3 letras)"
+      [(ngModel)]="texto"
+      #textoCtrl="ngModel"
+      [minLen]="3"
+      returnKeyType="search"
+      (returnPress)="buscar(textoCtrl.valid)"
+      (ngModelChange)="buscar(textoCtrl.valid, $event)"
+      class="input input-border"
+    ></TextField>
+    <!-- (8) long press para limpiar la búsqueda -->
+    <Label
+      col="1"
+      class="fas icono-buscar"
+      text="&#xf002;"
+      (tap)="buscar(textoCtrl.valid)"
+      (longPress)="limpiar()"
+    ></Label>
+  </GridLayout>
+
+  <Label
+    row="1"
+    *ngIf="textoCtrl.errors?.minLen"
+    class="error"
+    [text]="'Escribe al menos 3 caracteres (llevas ' + textoCtrl.errors?.minLen?.actual + ')'"
+  ></Label>
+  <Label row="2" class="contador" [text]="resultados.length + ' resultado(s)'"></Label>
+
+  <!-- (1) ListView con plantilla anidada usando FlexboxLayout -->
+  <ListView row="3" [items]="resultados" (itemTap)="onItemTap($event)">
+    <ng-template let-item="item">
+      <FlexboxLayout flexDirection="row" flexWrap="wrap" alignItems="center" class="resultado">
+        <Label [text]="item.titulo" class="resultado-titulo" flexGrow="1" textWrap="true"></Label>
+        <Label [text]="item.categoria" class="chip"></Label>
+        <Label *ngIf="item.favorita" class="fas favorita" text="&#xf005;"></Label>
+        <Label [text]="item.resumen" class="resultado-resumen" flexBasis="100%" textWrap="true"></Label>
+      </FlexboxLayout>
+    </ng-template>
+  </ListView>
 </GridLayout>
