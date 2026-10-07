@@ -15,4 +15,9 @@
   <Label [text]="apiUrl" class="valor" textWrap="true"></Label>
 
   <Button text="Editar" class="-primary m-t-20" (tap)="editar()"></Button>
+
+  <!-- (1) Token de Firebase Cloud Messaging (para enviar notificaciones de prueba) -->
+  <Label text="Token de Firebase (FCM)" class="etiqueta m-t-20"></Label>
+  <TextView [text]="token$ | async" editable="false" class="token"></TextView>
+  <Button text="Compartir token" (tap)="compartirToken()"></Button>
 </StackLayout>

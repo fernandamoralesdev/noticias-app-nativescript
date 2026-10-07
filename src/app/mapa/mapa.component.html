@@ -1,0 +1,20 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Mapa" colSpan="2"></Label>
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<!-- (7) Mapa de Google (la API key propia va en AndroidManifest.xml) -->
+<GridLayout rows="*, auto">
+  <MapView
+    row="0"
+    [lat]="centro.lat"
+    [lng]="centro.lng"
+    [zoom]="15"
+    (ready)="onMapReady($event)"
+    (markerTap)="onMarkerTap($event)"
+  ></MapView>
+  <Label row="1" class="pie" textWrap="true" text="Toca el marcador para ver su información"></Label>
+</GridLayout>

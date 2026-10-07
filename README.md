@@ -80,3 +80,44 @@ ns run android
 | 8 | Favoritos listados en la sección "Favoritos" | `src/app/favoritos/favoritos.component.html` (persistidos en `favoritos.service.ts`) |
 | 9 | Botón "Leer ahora" que despacha un action de Redux | `favoritos.component.ts` → `store.dispatch(leerAhora({ noticia }))`; actions/reducer en `src/app/store/` |
 | 10 | Pantalla principal con listado reactivo usando `select` del Store | `src/app/home/home.component.ts` → `store.select(selectNoticiasLeerAhora)` + `async` en el `ListView` |
+
+---
+
+# Evaluación Módulo 4 – Capacidades nativas y pruebas automáticas
+
+Plugins agregados: `@nativescript/firebase-core`, `@nativescript/firebase-messaging`, `@nativescript/social-share`, `@nativescript/camera`, `@nativescript/google-maps`.
+Testing: `karma`, `karma-jasmine`, `karma-junit-reporter`, `karma-chrome-launcher`, `karma-esbuild`.
+
+## Configuración con claves propias
+
+**Firebase (notificaciones)**
+1. En [console.firebase.google.com](https://console.firebase.google.com) crea un proyecto y agrega una app Android con el paquete `org.nativescript.MiProyecto` (el `id` de `nativescript.config.ts`).
+2. Descarga `google-services.json` y cópialo en `App_Resources/Android/src/google-services.json`.
+3. Corre la app, entra a **Settings** y copia el **Token de Firebase** (o usa "Compartir token").
+4. En Firebase → Messaging → *Nueva campaña* → *Enviar mensaje de prueba*, pega el token y envía. Con la app abierta llega como **Toast**.
+
+**Google Maps**
+1. En [console.cloud.google.com](https://console.cloud.google.com) habilita **Maps SDK for Android** y crea una API key.
+2. Reemplaza `TU_API_KEY_DE_GOOGLE_MAPS` en `App_Resources/Android/src/main/AndroidManifest.xml`.
+
+## Pruebas unitarias
+
+~~~
+npm install          # en tu Mac, para que se instalen los binarios correctos
+npm run test:unit    # Jasmine + Karma en Chrome headless
+~~~
+
+Al terminar se genera `reports/junit/test-results.xml` (Karma JUnit Reporter).
+
+| # | Requisito | Dónde está |
+|---|---|---|
+| 1 | Token de Firebase (integración con claves propias) | `src/app/domain/notificaciones.service.ts` (`getToken()`), se muestra en **Settings**; `google-services.json` en `App_Resources/Android/src/` |
+| 2 | Toast con las notificaciones entrantes | `notificaciones.service.ts` → `messaging.onMessage(...)` + `mostrarToast()` |
+| 3 | social-share con texto | `camara.component.ts` → `compartirTexto()`, `noticias-detalle.component.ts` → `compartir()`, Settings → "Compartir token" |
+| 4 | social-share con imagen | `camara.component.ts` → `compartirImagenApp()` (comparte `mi_icono.png`) |
+| 5 | Plugin camera para tomar fotos | `src/app/camara/camara.component.ts` → `tomarFoto()` (menú → "Cámara") |
+| 6 | Compartir la foto de la cámara | `camara.component.ts` → `compartirFoto()` (`shareImage`) |
+| 7 | Mapa de Google con cuenta propia | `src/app/mapa/` (`GoogleMapsModule` + `<MapView>`), API key en `AndroidManifest.xml` |
+| 8 | Marker en el mapa | `mapa.component.ts` → `map.addMarker(...)` en la Plaza de Bolívar |
+| 9 | Suite de Jasmine que prueba un reducer | `src/app/store/leer-ahora.reducer.spec.ts` (7 pruebas del reducer `leerAhora`) |
+| 10 | Karma JUnit Reporter configurado | `karma.conf.js` (`reporters: ['progress', 'junit']`) → genera `reports/junit/test-results.xml` |

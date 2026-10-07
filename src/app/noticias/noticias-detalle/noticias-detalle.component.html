@@ -5,6 +5,8 @@
     <Label [text]="noticia?.titulo" class="h2" textWrap="true"></Label>
     <Label [text]="noticia?.resumen" textWrap="true"></Label>
     <Label [text]="'Categoría: ' + noticia?.categoria" class="m-t-10"></Label>
+    <!-- (3) Compartir la noticia como texto con social-share -->
+    <Button text="Compartir noticia" class="-outline m-t-10" (tap)="compartir()"></Button>
 
     <!-- (6) Formulario de edición con two-way binding [()] -->
     <Label text="Editar noticia" class="h3 m-t-20"></Label>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { RouterExtensions } from '@nativescript/angular'
+import { shareText } from '@nativescript/social-share'
 
 import { Noticia, NoticiasService } from '../../domain/noticias.service'
 import { mostrarToast } from '../../shared/toast'
@@ -35,6 +36,13 @@ export class NoticiasDetalleComponent implements OnInit {
     this.noticia.titulo = this.titulo.trim()
     this.noticia.resumen = this.resumen.trim()
     mostrarToast('Noticia actualizada')
+  }
+
+  /** (3) Comparte el título y el resumen como texto */
+  compartir(): void {
+    if (this.noticia) {
+      shareText(`${this.noticia.titulo}\n\n${this.noticia.resumen}`, this.noticia.titulo)
+    }
   }
 
   volver(): void {

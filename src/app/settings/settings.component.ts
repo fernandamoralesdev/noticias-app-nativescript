@@ -4,7 +4,10 @@ import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
 import { Application, NavigatedData } from '@nativescript/core'
 import { Page } from '@nativescript/core'
 
+import { shareText } from '@nativescript/social-share'
+
 import { UsuarioService } from '../domain/usuario.service'
+import { NotificacionesService } from '../domain/notificaciones.service'
 
 @Component({
   selector: 'Settings',
@@ -13,15 +16,18 @@ import { UsuarioService } from '../domain/usuario.service'
     `
       .etiqueta { color: #757575; font-size: 13; margin-top: 12; }
       .valor { font-size: 18; font-weight: bold; }
+      .token { font-size: 12; color: #424242; background-color: #f5f5f5; border-width: 0; }
     `,
   ],
 })
 export class SettingsComponent {
   nombre = ''
   apiUrl = ''
+  token$ = this.notificaciones.token$
 
   constructor(
     private usuarioService: UsuarioService,
+    private notificaciones: NotificacionesService,
     private routerExtensions: RouterExtensions,
     page: Page
   ) {
@@ -34,6 +40,11 @@ export class SettingsComponent {
   cargar(): void {
     this.nombre = this.usuarioService.getNombre()
     this.apiUrl = this.usuarioService.getApiUrl()
+  }
+
+  /** Comparte el token (útil para copiarlo y pegarlo en la consola de Firebase) */
+  compartirToken(): void {
+    shareText(this.notificaciones.token, 'Token FCM')
   }
 
   editar(): void {

@@ -10,6 +10,7 @@ import { filter } from 'rxjs/operators'
 import { Application } from '@nativescript/core'
 
 import { UsuarioService } from './domain/usuario.service'
+import { NotificacionesService } from './domain/notificaciones.service'
 
 @Component({
   selector: 'ns-app',
@@ -24,7 +25,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private routerExtensions: RouterExtensions,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private notificaciones: NotificacionesService
   ) {
     // Use the component constructor to inject services.
   }
@@ -32,6 +34,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this._activatedUrl = '/home'
     this._sideDrawerTransition = new SlideInOnTopTransition()
+
+    // (1)(2) Inicializa Firebase, obtiene el token y escucha notificaciones entrantes
+    this.notificaciones.iniciar()
 
     this.router.events
       .pipe(filter((event: any) => event instanceof NavigationEnd))

@@ -1,0 +1,34 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Cámara" colSpan="2"></Label>
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout class="page__content" padding="16">
+    <!-- (5) Tomar una fotografía con el plugin camera -->
+    <Button text="Tomar foto" class="-primary" (tap)="tomarFoto()"></Button>
+
+    <GridLayout height="300" class="marco m-t-10">
+      <Image *ngIf="foto" [src]="foto" stretch="aspectFit"></Image>
+      <Label
+        *ngIf="!foto"
+        text="Aquí aparecerá tu foto"
+        class="vacio"
+        horizontalAlignment="center"
+        verticalAlignment="center"
+      ></Label>
+    </GridLayout>
+
+    <!-- (6) Compartir la imagen de la cámara con social-share -->
+    <Button text="Compartir foto" class="-outline m-t-10" [isEnabled]="!!foto" (tap)="compartirFoto()"></Button>
+
+    <Label text="Otras opciones para compartir" class="subtitulo"></Label>
+    <!-- (4) Compartir una imagen (el ícono de la app) -->
+    <Button text="Compartir imagen de la app" (tap)="compartirImagenApp()"></Button>
+    <!-- (3) Compartir texto -->
+    <Button text="Compartir texto" (tap)="compartirTexto()"></Button>
+  </StackLayout>
+</ScrollView>

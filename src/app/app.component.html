@@ -62,6 +62,26 @@
           <Label col="1" text="Favoritos" class="p-r-10"></Label>
         </GridLayout>
 
+        <GridLayout
+          columns="auto, *"
+          class="nt-drawer__list-item"
+          [class.-selected]="isComponentSelected('/camara')"
+          (tap)="onNavItemTap('/camara')"
+        >
+          <Label col="0" text="&#xf030;" class="nt-icon fas"></Label>
+          <Label col="1" text="Cámara" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          class="nt-drawer__list-item"
+          [class.-selected]="isComponentSelected('/mapa')"
+          (tap)="onNavItemTap('/mapa')"
+        >
+          <Label col="0" text="&#xf279;" class="nt-icon fas"></Label>
+          <Label col="1" text="Mapa" class="p-r-10"></Label>
+        </GridLayout>
+
         <StackLayout class="hr"></StackLayout>
 
         <GridLayout
